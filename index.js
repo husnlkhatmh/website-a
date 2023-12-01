@@ -1,47 +1,32 @@
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 
-var cors = require('cors')
-var bodyParser = require('body-parser')
+var bodyParser = require("body-parser");
+var cors = require("cors");
 
-// create application/json parser
-var jsonParser = bodyParser.json()
+var jsonParser = bodyParser.json();
 
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var urlencodeParser = bodyParser.urlencoded({ extended: false });
 
-const port = 3000
+const port = 3000;
 
-app.use(cors())
+app.use(cors());
 app.use(jsonParser);
-app.use(urlencodedParser);
+app.use(urlencodeParser);
 
-app.get('/', (req, res) => {
-  res.json('Hello World!')
-})
+app.get("/", (req, res) => {
+  res.json("wesite A");
+});
 
-app.post('/login', (req, res) => {
-    // Simulasi data dari database
-    const username = 'joko'
-    const password = '12345678'
+app.post("/github-event", (req, res) => {
+  if (req.body.secret !== "secret123") {
+    return res.status(403).json({ error: "Invalid secret" });
+  }
 
-    if (req.body.username === username) {
-        if (req.body.password === password) {
-            res.json({
-                status: 'success'
-            })
-        }  else {
-            res.json({
-                status: 'error, wrong password'
-            })
-        }
-    } else {
-        res.json({
-            status: 'error, username not found'
-        })
-    }
-  })
+  console.log("Incoming Webhook");
+  res.json("");
+});
 
 app.listen(port, () => {
-  console.log('Example app listening on port ${port}')
-})
+  console.log(`Example app listening on port ${port}`);
+});
